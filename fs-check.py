@@ -15,7 +15,7 @@ size = 0
 
 for root, dirs, files in os.walk(Folderpath):
     for file_obj in files:
-        size += os.stat(root + "\\" + file_obj).st_size
+        size += os.stat(root + "/" + file_obj).st_size
 
 #for ele in os.scandir(Folderpath):
 #    size += os.stat(ele).st_size
