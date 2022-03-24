@@ -12,7 +12,12 @@ def convert_bytes(num):
 Folderpath = sys.argv[1] # Take directory in
 
 size = 0
-for ele in os.scandir(Folderpath):
-    size += os.stat(ele).st_size
+
+for root, dirs, files in os.walk(Folderpath):
+    for file_obj in files:
+        size += os.stat(root + "\\" + file_obj).st_size
+
+#for ele in os.scandir(Folderpath):
+#    size += os.stat(ele).st_size
 
 print(convert_bytes(size))
