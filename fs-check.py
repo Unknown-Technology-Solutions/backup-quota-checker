@@ -12,12 +12,12 @@ def convert_bytes(num):
         num /= step_unit
 
 
-Folderpath = sys.argv[1] # Take directory in
+def get_folder_size(folderPath):
+    size = 0 # Create a var to hold the file size
+    for root, dirs, files in os.walk(folderPath):
+        for file_obj in files:
+            size += os.stat(root + "/" + file_obj).st_size # Add each file's size together
+    return size
 
-size = 0 # Create a var to hold the file size
-
-for root, dirs, files in os.walk(Folderpath):
-    for file_obj in files:
-        size += os.stat(root + "/" + file_obj).st_size # Add each file's size together
-
-print(convert_bytes(size))
+def folderSize(folderPath):
+    convert_bytes(get_folder_size(folderPath))
