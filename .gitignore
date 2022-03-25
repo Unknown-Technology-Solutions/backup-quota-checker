@@ -1,1 +1,5 @@
 /__pycache__
+/Lib/site-packages
+/Scripts
+/pyvenv.cfg
+/Include
