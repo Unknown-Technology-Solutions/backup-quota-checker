@@ -11,13 +11,13 @@ class webAPI(BaseHTTPRequestHandler):
 #    def do_HEAD(self):
 #        self._set_headers()
     def do_GET(self):
-        if self.path == '/':
-            self.path = '/index.html'
-        try:
+        available_endpoints = {"/tests/database", "/tests/filesystem"}
+        
+        if self.path in available_endpoints:
             # If API endpoint is valid...
             response = "Valid question"
             self.send_response(200)
-        except:
+        else:
             response = "Invalid question"
             self.send_response(404)
         self.end_headers()
