@@ -19,5 +19,10 @@ def get_folder_size(folderPath):
             size += os.stat(root + "/" + file_obj).st_size # Add each file's size together
     return size
 
-def folderSize(folderPath):
-    convert_bytes(get_folder_size(folderPath))
+def folderSize(folderPath, deno=True):
+    if deno == True:
+        convert_bytes(get_folder_size(folderPath))
+    elif deno == False:
+        get_folder_size(folderPath)
+    else:
+        raise TypeError
