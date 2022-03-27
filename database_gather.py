@@ -39,5 +39,16 @@ def find_backup_dir(connection, username):
         raise ValueError
 
 
-print(validate_user_info(info_db, "zane.reick",
-      "23d72d65-ad82-11ec-a614-020054746872"))
+def find_data_cap(connection, username):
+    """
+    Find a given user's data cap in bytes
+    """
+    cur = connection.cursor()
+    query = "SELECT `data_cap` FROM user_mapping WHERE username = '" + username + "'"
+    cur.execute(query)
+    return_array = cur.fetchone()
+    if len(return_array) == 1:
+        # return 1st value, that should be the only value
+        return return_array[0]
+    else:
+        raise ValueError
