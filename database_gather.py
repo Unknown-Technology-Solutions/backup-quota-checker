@@ -126,11 +126,15 @@ def update_data_usage_cache(connection, username, usage):
         return False
 
 
-def update_old_cache(connection, username, usage):
+def update_old_cache(connection, username, usage, force=False):
     """
     Update cache if it needs it
+    Default behavior is to only update cache if it's outside it's TTL
     """
-    c_state = check_cache_ttl(connection, username)
+    if force:
+        c_state = False
+    else:
+        c_state = check_cache_ttl(connection, username) # Check if cache needs updating based on TTL
 
     if c_state == False:
         update_data_usage_cache(connection, username, usage)
