@@ -1,12 +1,14 @@
 import mysql.connector
 import datetime as dt
 
-info_db = mysql.connector.connect(
-    host="localhost",
-    user="infoMan",
-    password="placeholder",
-    database="backup_resources"
-)
+
+def auth_to_db(username, password):
+    return mysql.connector.connect(
+        host="localhost",
+        user=username,
+        password=password,
+        database="backup_resources"
+    )
 
 
 def validate_user_info(connection, username, auth_key):
@@ -97,7 +99,7 @@ def check_cache_ttl(connection, username):
     elif c_state == False:
         return False
     elif c_state == "invalid":
-        # TODO: Handle invalid caches
+        # TODO: #1 Handle invalid caches
         return False
 
 
@@ -124,21 +126,3 @@ def update_data_usage_cache(connection, username, usage):
         return True
     elif c_state == "invalid":
         return False
-
-
-def update_old_cache(connection, username, usage, force=False):
-    """
-    Update cache if it needs it
-    Default behavior is to only update cache if it's outside it's TTL
-    """
-    if force:
-        c_state = False
-    else:
-        c_state = check_cache_ttl(connection, username) # Check if cache needs updating based on TTL
-
-    if c_state == False:
-        update_data_usage_cache(connection, username, usage)
-        print("Updating cache for " + username)
-        return True
-    elif c_state == True:
-        return True
