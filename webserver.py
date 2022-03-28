@@ -1,5 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from SocketServer import ThreadingMixIn
+from socketserver import ThreadingMixIn
 import json
 import urllib
 
@@ -42,9 +42,10 @@ class threadHTTPServ(ThreadingMixIn, HTTPServer):
 
 def serveAPI(bind_addr, bind_port):
     ws = threadHTTPServ((bind_addr, bind_port), webAPI)
-    try:
-        ws.serve_forever()
-    except KeyboardInterrupt:
-        pass
+    ws.serve_forever()
+#    try:
+#        ws.serve_forever()
+#    except KeyboardInterrupt:
+#        pass
 
     ws.server_close()
