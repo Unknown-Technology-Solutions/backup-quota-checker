@@ -34,6 +34,12 @@ def read_usage_data(db_con, json_in):
         output = '{ "usage": "-1", "quota": "-1"}'
         return output
 
+def handle_endpoint(path, db_con, json_in):
+    if path in available_endpoints:
+        if path == "/authenticated/read_quota":
+            return read_usage_data(db_con, json_in)
+    else:
+        return { "usage": "-1", "quota": "-1"}
 
-print(read_usage_data(fsdb.dg.auth_to_db("infoMan", "placeholder"),
-      '{"username": "zane.reick", "key": "23d72d65-ad82-11ec-a614-020054746872"}'))
+#print(read_usage_data(fsdb.dg.auth_to_db("infoMan", "placeholder"),
+#      '{"username": "zane.reick", "key": "23d72d65-ad82-11ec-a614-020054746872"}'))

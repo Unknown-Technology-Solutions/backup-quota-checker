@@ -25,12 +25,14 @@ class webAPI(BaseHTTPRequestHandler):
 
     def do_POST(self):
         length = int(self.headers['Content-Length'])
-        post_data = urllib.parse.parse_qs(
-            self.rfile.read(length).decode('utf-8'))
-        print(post_data)
+        post_data = self.rfile.read(length)
+        #print(post_data.decode())
         self.send_response(200)
+        self.send_header('Content-Type', 'application/json')
         self.end_headers()
-        self.wfile.write(bytes("PLACEHOLDER", 'utf-8'))
+#        response = apio.read_usage_data(apio.fsdb.dg.auth_to_db("infoMan", "placeholder"), post_data)
+        response = apio.handle_endpoint(self.path, apio.fsdb.dg.auth_to_db("infoMan", "placeholder"), post_data)
+        self.wfile.write(bytes(response, 'utf-8'))
 
 class threadHTTPServ(ThreadingMixIn, HTTPServer):
     """
