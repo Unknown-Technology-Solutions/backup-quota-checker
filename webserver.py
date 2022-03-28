@@ -1,8 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from socketserver import ThreadingMixIn
-import json
 import urllib
-
+import api_outputs as apio
 
 class webAPI(BaseHTTPRequestHandler):
 
@@ -13,9 +12,8 @@ class webAPI(BaseHTTPRequestHandler):
     #    def do_HEAD(self):
     #        self._set_headers()
     def do_GET(self):
-        available_endpoints = {"/tests/database", "/tests/filesystem"}
 
-        if self.path in available_endpoints:
+        if self.path in apio.available_endpoints:
             # If API endpoint is valid...
             response = "Valid question"
             self.send_response(200)
