@@ -66,10 +66,10 @@ def does_cache_exist(connection, username):
     cur.execute(query)
     return_array = cur.fetchone()
     if type(return_array) is not tuple:
-        print("Didn't exist!")
+        print("Cache didn't exist!")
         return False
     elif len(return_array) == 1:
-        print("Did exist!")
+        print("Cache did exist!")
         return True
     else:
         print("Invalid cache!")
@@ -126,3 +126,16 @@ def update_data_usage_cache(connection, username, usage):
         return True
     elif c_state == "invalid":
         return False
+
+
+def read_data_usage_cache(connection, username):
+    """
+    Read the data usage cache for a given user
+    """
+    cur = connection.cursor()
+    query = "SELECT `last_bytes` FROM previous_quota_check_cache WHERE user = '" + username + "'"
+    cur.execute(query)
+
+    return_array = cur.fetchone()
+
+    return return_array[0]
