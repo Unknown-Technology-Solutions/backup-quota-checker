@@ -24,7 +24,7 @@ def validate_user_info(connection, username, auth_key):
         # return 1st value, that should be the only value
         return return_array[0]
     else:
-        raise ValueError
+        return False
 
 
 def find_backup_dir(connection, username):
