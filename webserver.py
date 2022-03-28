@@ -1,4 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from SocketServer import ThreadingMixIn
 import json
 import urllib
 
@@ -33,9 +34,14 @@ class webAPI(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(bytes("PLACEHOLDER", 'utf-8'))
 
+class threadHTTPServ(ThreadingMixIn, HTTPServer):
+    """
+    Handle requests in a seperate thread
+    """
+    pass
 
 def serveAPI(bind_addr, bind_port):
-    ws = HTTPServer((bind_addr, bind_port), webAPI)
+    ws = threadHTTPServ((bind_addr, bind_port), webAPI)
     try:
         ws.serve_forever()
     except KeyboardInterrupt:
