@@ -13,6 +13,9 @@ def convert_bytes(num):
 
 
 def get_folder_size(folderPath):
+    """
+    Retreive folder size on disk
+    """
     size = 0 # Create a var to hold the file size
     for root, dirs, files in os.walk(folderPath):
         for file_obj in files:
@@ -20,9 +23,12 @@ def get_folder_size(folderPath):
     return size
 
 def folderSize(folderPath, deno=True):
+    """
+    Return a denominated folder size by default, otherwise it returns an int of bytes
+    """
     if deno == True:
-        convert_bytes(get_folder_size(folderPath))
+        return convert_bytes(get_folder_size(folderPath))
     elif deno == False:
-        get_folder_size(folderPath)
+        return get_folder_size(folderPath)
     else:
         raise TypeError
