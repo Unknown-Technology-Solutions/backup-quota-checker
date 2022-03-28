@@ -17,4 +17,4 @@ def rw_usage(con, username):
         return total_usage
 
 
-print(rw_usage(dg.auth_to_db("infoMan", "placeholder"), "zane.reick"))
+#print(rw_usage(dg.auth_to_db("infoMan", "placeholder"), "zane.reick"))
