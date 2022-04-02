@@ -2,7 +2,7 @@ import fs_to_db as fsdb
 import json
 
 available_endpoints = {"/tests/database",
-                       "/tests/filesystem", "/tests/json", "/tests/cache", "/authenticated/read_quota"}
+                       "/tests/filesystem", "/tests/json", "/tests/cache", "/authenticated/read_quota", "/help", "/info"}
 
 
 def auth_from_json(db_con, json_in):
@@ -34,12 +34,17 @@ def read_usage_data(db_con, json_in):
         output = '{ "usage": "-1", "quota": "-1"}'
         return output
 
+
 def handle_endpoint(path, db_con, json_in):
     if path in available_endpoints:
         if path == "/authenticated/read_quota":
             return read_usage_data(db_con, json_in)
+        elif path == "/info":
+            return {"message": "This is an API for customers to query to find thier data usage on our service"}
+        elif path == "/help":
+            return {"message": "For information on how to use this API, please contact support or refer to the API documentation"}
     else:
-        return { "usage": "-1", "quota": "-1"}
+        return {"error": "CEC601"}
 
-#print(read_usage_data(fsdb.dg.auth_to_db("infoMan", "placeholder"),
+# print(read_usage_data(fsdb.dg.auth_to_db("infoMan", "placeholder"),
 #      '{"username": "zane.reick", "key": "23d72d65-ad82-11ec-a614-020054746872"}'))
