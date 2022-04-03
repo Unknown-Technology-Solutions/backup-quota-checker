@@ -2,7 +2,7 @@ import fs_to_db as fsdb
 import json
 
 available_endpoints = {"/tests/database",
-                       "/tests/filesystem", "/tests/json", "/tests/cache", "/authenticated/read_quota", "/help", "/info"}
+                       "/tests/filesystem", "/tests/json", "/tests/cache", "/authenticated/read_quota", "/help", "/info", "/authenticated/read_quota/human"}
 
 
 def auth_from_json(db_con, json_in):
@@ -15,7 +15,7 @@ def auth_from_json(db_con, json_in):
     return fsdb.dg.validate_user_info(db_con, in_dict["username"], in_dict["key"])
 
 
-def read_usage_data(db_con, json_in):
+def read_usage_data(db_con, json_in, human):
     """
     Expected JSON input:
     { "username":"foo", "key":"bar"}
@@ -26,7 +26,11 @@ def read_usage_data(db_con, json_in):
     if type(is_user_valid) is int:
         bytes_used = fsdb.rw_usage(db_con, in_dict["username"])
         bytes_quota = fsdb.dg.find_data_cap(db_con, in_dict["username"])
-
+        if human == False:
+            pass
+        else:
+            bytes_used = fsdb.fsc.convert_bytes(convert_bytes(bytes_used))
+            bytes_quota = fsdb.fsc.convert_bytes(convert_bytes(bytes_quota))
         output = '{ "usage": "' + \
             str(bytes_used) + '", "quota": "' + str(bytes_quota) + '"}'
         return output
@@ -38,7 +42,9 @@ def read_usage_data(db_con, json_in):
 def handle_endpoint(path, db_con, json_in):
     if path in available_endpoints:
         if path == "/authenticated/read_quota":
-            return read_usage_data(db_con, json_in)
+            return read_usage_data(db_con, json_in, False)
+        elif path == "/authenticated/read_quota/human":
+            return read_usage_data(db_con, json_in, True)
         elif path == "/info":
             return {"message": "This is an API for customers to query to find thier data usage on our service"}
         elif path == "/help":
