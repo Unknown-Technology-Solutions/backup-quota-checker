@@ -1,8 +1,17 @@
 import fs_to_db as fsdb
+from errors import ec
 import json
 
 available_endpoints = {"/tests/database",
-                       "/tests/filesystem", "/tests/json", "/tests/cache", "/authenticated/read_quota", "/help", "/info", "/authenticated/read_quota/human"}
+                       "/tests/filesystem", "/tests/json", "/tests/cache", "/authenticated/read_quota", "/help", "/info", "/authenticated/read_quota/human", "/error/query"}
+
+
+def query_error_code(json_in):
+    in_dict = json.loads(json_in)
+    if id_dict['error_code'] in ec.ed:
+        return '{"error_code": "' + id_dict['error_code'] + '", "description": "' + ec.ed[id_dict['error_code']] + '"}'
+    else:
+        return '{"error": "CEC603"}'
 
 
 def auth_from_json(db_con, json_in):
@@ -35,22 +44,26 @@ def read_usage_data(db_con, json_in, human):
             str(bytes_used) + '", "quota": "' + str(bytes_quota) + '"}'
         return output
     elif is_user_valid == False:
-        output = '{ "usage": "-1", "quota": "-1"}'
+        output = '{"error": "CEC602"}'
         return output
 
 
-def handle_endpoint(path, db_con, json_in):
+def handle_endpoint(path, db_con, json_in, req_type):
     if path in available_endpoints:
-        if path == "/authenticated/read_quota":
+        if path == "/authenticated/read_quota" and req_type == "post":
             return read_usage_data(db_con, json_in, False)
-        elif path == "/authenticated/read_quota/human":
+        elif path == "/authenticated/read_quota/human" and req_type == "post":
             return read_usage_data(db_con, json_in, True)
-        elif path == "/info":
-            return {"message": "This is an API for customers to query to find thier data usage on our service"}
-        elif path == "/help":
-            return {"message": "For information on how to use this API, please contact support or refer to the API documentation"}
+        elif path == "/info" and req_type == "get":
+            return '{"message": "This is an API for customers to query to find thier data usage on our service"}'
+        elif path == "/help" and req_type == "get":
+            return '{"message": "For information on how to use this API, please contact support or refer to the API documentation"}'
+        elif path == "/error/query" and req_type == "post":
+            return query_error_code(json_in)
+        else:
+            return '{"error": "CEC601"}'
     else:
-        return {"error": "CEC601"}
+        return '{"error": "CEC601"}'
 
 # print(read_usage_data(fsdb.dg.auth_to_db("infoMan", "placeholder"),
 #      '{"username": "zane.reick", "key": "23d72d65-ad82-11ec-a614-020054746872"}'))
