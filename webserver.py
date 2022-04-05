@@ -46,6 +46,7 @@ class threadHTTPServ(ThreadingMixIn, HTTPServer):
 
 
 def serveAPI(bind_addr, bind_port):
+    print("Serving on " + bind_addr + ":" + str(bind_port))
     ws = threadHTTPServ((bind_addr, bind_port), webAPI)
     ws.serve_forever()
 #    try:
