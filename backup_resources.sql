@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `auth_keys` (
   UNIQUE KEY `auth_key` (`auth_key`),
   KEY `user` (`user`),
   CONSTRAINT `users` FOREIGN KEY (`user`) REFERENCES `user_mapping` (`username`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3 COMMENT='Table to contain all keys used for authentication';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Table to contain all keys used for authentication';
 
 -- Data exporting was unselected.
 
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `previous_quota_check_cache` (
   PRIMARY KEY (`id`),
   KEY `user` (`user`),
   CONSTRAINT `user` FOREIGN KEY (`user`) REFERENCES `user_mapping` (`username`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3 COMMENT="Cache for usage";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Storage Usage cache';
 
 -- Data exporting was unselected.
 
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `user_mapping` (
   `data_cap` int(11) NOT NULL DEFAULT 1024 COMMENT 'bytes',
   PRIMARY KEY (`id`),
   KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COMMENT='Map usernames to an auth key and linux folder';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Map usernames to an auth key and linux folder';
 
 -- Data exporting was unselected.
 
